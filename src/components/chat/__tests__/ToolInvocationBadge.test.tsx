@@ -8,10 +8,10 @@ afterEach(() => {
 
 function makeInvocation(
   toolName: string,
-  args: Record<string, any>,
-  state: "call" | "result" = "call"
+  input: Record<string, any>,
+  state: "input-available" | "output-available" = "input-available"
 ) {
-  return { toolName, toolCallId: "test-id", args, state, result: state === "result" ? "ok" : undefined };
+  return { toolName, toolCallId: "test-id", input, state };
 }
 
 test("str_replace_editor create pending shows Creating + path", () => {
@@ -21,7 +21,7 @@ test("str_replace_editor create pending shows Creating + path", () => {
 });
 
 test("str_replace_editor create done shows Created + path", () => {
-  render(<ToolInvocationBadge toolInvocation={makeInvocation("str_replace_editor", { command: "create", path: "/App.jsx" }, "result")} />);
+  render(<ToolInvocationBadge toolInvocation={makeInvocation("str_replace_editor", { command: "create", path: "/App.jsx" }, "output-available")} />);
   expect(screen.getByText(/Created/)).toBeDefined();
   expect(screen.getByText("/App.jsx")).toBeDefined();
 });
@@ -33,7 +33,7 @@ test("str_replace_editor str_replace pending shows Editing + path", () => {
 });
 
 test("str_replace_editor str_replace done shows Edited + path", () => {
-  render(<ToolInvocationBadge toolInvocation={makeInvocation("str_replace_editor", { command: "str_replace", path: "/components/Button.tsx" }, "result")} />);
+  render(<ToolInvocationBadge toolInvocation={makeInvocation("str_replace_editor", { command: "str_replace", path: "/components/Button.tsx" }, "output-available")} />);
   expect(screen.getByText(/Edited/)).toBeDefined();
 });
 
@@ -44,7 +44,7 @@ test("str_replace_editor insert pending shows Inserting into + path", () => {
 });
 
 test("str_replace_editor insert done shows Inserted into + path", () => {
-  render(<ToolInvocationBadge toolInvocation={makeInvocation("str_replace_editor", { command: "insert", path: "/App.jsx" }, "result")} />);
+  render(<ToolInvocationBadge toolInvocation={makeInvocation("str_replace_editor", { command: "insert", path: "/App.jsx" }, "output-available")} />);
   expect(screen.getByText(/Inserted into/)).toBeDefined();
 });
 
@@ -55,7 +55,7 @@ test("file_manager rename pending shows Renaming + path", () => {
 });
 
 test("file_manager rename done shows Renamed + path", () => {
-  render(<ToolInvocationBadge toolInvocation={makeInvocation("file_manager", { command: "rename", path: "/old.jsx", new_path: "/new.jsx" }, "result")} />);
+  render(<ToolInvocationBadge toolInvocation={makeInvocation("file_manager", { command: "rename", path: "/old.jsx", new_path: "/new.jsx" }, "output-available")} />);
   expect(screen.getByText(/Renamed/)).toBeDefined();
 });
 
@@ -76,6 +76,6 @@ test("pending state shows loader", () => {
 });
 
 test("done state shows no loader", () => {
-  render(<ToolInvocationBadge toolInvocation={makeInvocation("str_replace_editor", { command: "create", path: "/App.jsx" }, "result")} />);
+  render(<ToolInvocationBadge toolInvocation={makeInvocation("str_replace_editor", { command: "create", path: "/App.jsx" }, "output-available")} />);
   expect(screen.queryByLabelText("loading")).toBeNull();
 });
