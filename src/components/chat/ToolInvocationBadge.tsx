@@ -5,22 +5,21 @@ import { Loader2 } from "lucide-react";
 interface ToolInvocation {
   toolName: string;
   toolCallId: string;
-  args: Record<string, any>;
+  input: Record<string, any>;
   state: string;
-  result?: any;
 }
 
 interface ToolInvocationBadgeProps {
   toolInvocation: ToolInvocation;
 }
 
-function getLabel(toolName: string, args: Record<string, any>, done: boolean): React.ReactNode {
-  const path = args.path ? (
-    <span className="font-mono">{args.path}</span>
+function getLabel(toolName: string, input: Record<string, any>, done: boolean): React.ReactNode {
+  const path = input.path ? (
+    <span className="font-mono">{input.path}</span>
   ) : null;
 
   if (toolName === "str_replace_editor") {
-    switch (args.command) {
+    switch (input.command) {
       case "create":
         return <>{done ? "Created" : "Creating"} {path}</>;
       case "str_replace":
@@ -35,7 +34,7 @@ function getLabel(toolName: string, args: Record<string, any>, done: boolean): R
   }
 
   if (toolName === "file_manager") {
-    switch (args.command) {
+    switch (input.command) {
       case "rename":
         return <>{done ? "Renamed" : "Renaming"} {path}</>;
       case "delete":
@@ -47,7 +46,10 @@ function getLabel(toolName: string, args: Record<string, any>, done: boolean): R
 }
 
 export function ToolInvocationBadge({ toolInvocation }: ToolInvocationBadgeProps) {
-  const done = toolInvocation.state === "result";
+  const done =
+    toolInvocation.state === "output-available" ||
+    toolInvocation.state === "output-error" ||
+    toolInvocation.state === "output-denied";
 
   return (
     <div className="inline-flex items-center gap-2 mt-2 px-3 py-1.5 bg-neutral-50 rounded-lg text-xs border border-neutral-200">
@@ -57,7 +59,7 @@ export function ToolInvocationBadge({ toolInvocation }: ToolInvocationBadgeProps
         <Loader2 className="w-3 h-3 animate-spin text-blue-600 flex-shrink-0" aria-label="loading" />
       )}
       <span className="text-neutral-700">
-        {getLabel(toolInvocation.toolName, toolInvocation.args, done)}
+        {getLabel(toolInvocation.toolName, toolInvocation.input ?? {}, done)}
       </span>
     </div>
   );
