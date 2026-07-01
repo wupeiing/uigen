@@ -43,7 +43,7 @@ export function MainContent({ user, project }: MainContentProps) {
             className="h-full"
           >
             {/* Left Panel - Chat */}
-            <ResizablePanel defaultSize={35} minSize={25} maxSize={50}>
+            <ResizablePanel id="chat-panel" defaultSize={35} minSize={25} maxSize={50}>
               <div className="h-full flex flex-col bg-white">
                 {/* Chat Header */}
                 <div className="h-14 flex items-center px-6 border-b border-neutral-200/60">
@@ -57,10 +57,10 @@ export function MainContent({ user, project }: MainContentProps) {
               </div>
             </ResizablePanel>
 
-            <ResizableHandle className="w-[1px] bg-neutral-200 hover:bg-neutral-300 transition-colors" />
+            <ResizableHandle id="main-panel-handle" className="w-[1px] bg-neutral-200 hover:bg-neutral-300 transition-colors" />
 
             {/* Right Panel - Preview/Code */}
-            <ResizablePanel defaultSize={65}>
+            <ResizablePanel id="content-panel" defaultSize={65}>
               <div className="h-full flex flex-col bg-white">
                 {/* Top Bar */}
                 <div className="h-14 border-b border-neutral-200/60 px-6 flex items-center justify-between bg-neutral-50/50">
@@ -92,6 +92,7 @@ export function MainContent({ user, project }: MainContentProps) {
                     >
                       {/* File Tree */}
                       <ResizablePanel
+                        id="file-tree-panel"
                         defaultSize={30}
                         minSize={20}
                         maxSize={50}
@@ -101,10 +102,10 @@ export function MainContent({ user, project }: MainContentProps) {
                         </div>
                       </ResizablePanel>
 
-                      <ResizableHandle className="w-[1px] bg-neutral-200 hover:bg-neutral-300 transition-colors" />
+                      <ResizableHandle id="editor-panel-handle" className="w-[1px] bg-neutral-200 hover:bg-neutral-300 transition-colors" />
 
                       {/* Code Editor */}
-                      <ResizablePanel defaultSize={70}>
+                      <ResizablePanel id="code-editor-panel" defaultSize={70}>
                         <div className="h-full bg-white">
                           <CodeEditor />
                         </div>
